@@ -9,7 +9,7 @@ export default async function createPlugin(
   return await createRouter({
     logger: env.logger,
     awsEcrScanService: new AwsEcrScan({
-      awsRegion: "us-west-2",
+      awsRegion: "us-east-2",
     })
   });
 }
