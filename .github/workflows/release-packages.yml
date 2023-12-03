@@ -1,0 +1,21 @@
+name: Publish Packages
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        plugin: ["plugin-aws-ecr-scan", "plugin-aws-ecr-scan-backend"]
+    steps:
+      - uses: actions/checkout@v3
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - run: yarn install
+      - run: yarn tsc
+      - run: yarn workspace ${{ matrix.plugin }} publish --public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_AUTH_TOKEN }}
